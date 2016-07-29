@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'links.apps.LinksConfig',
-    'registration'
+    'registration',
+    'steelrumors',
 ]
 
 MIDDLEWARE_CLASSES = [

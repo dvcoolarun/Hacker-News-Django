@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from links.views import UserProfileDetailView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,5 +25,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login,
         {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
-    url(r'^accounts/', include('registration.backends.simple.urls'))
+    url(r'^accounts/', include('registration.backends.simple.urls')),
+    url(r"^users/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
+        name="profile"),
+    # url(r'^users/(?P<slug>\w+)/$', UserProfileDetailView.as_view(), name="profile")
 ]
