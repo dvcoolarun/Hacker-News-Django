@@ -1,4 +1,4 @@
-"""steelrumors URL Configuration
+"""steelrumors URL <Configuration></Configuration>
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -15,8 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^home/', include('links.urls'))
+    url(r'^home/', include('links.urls')),
+    url(r'^login/$', auth_views.login,
+        {'template_name': 'login.html'}, name='login'),
+    url(r'^logout/$', auth_views.logout_then_login, name='logout'),
+    url(r'^accounts/', include('registration.backends.simple.urls'))
 ]

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><a href="{{ object.link }}">{{ object.title }}</a></h2>
+
+<p>Submitted by <a href='{% url "profile" slug=object.submitter%}'>{{ object.submitter }}</a></p>
+
+<div class="desc">
+  {{ object.description }}
+</div>
+
+{% endblock %}

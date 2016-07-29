@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ object.username }}'s Profile</h2>
+{% if object.userprofile.bio %}
+<div>
+<b>Bio:</b>
+{{ object.userprofile.bio }}
+</div>
+{% endif %}
+{% endblock %}
