@@ -16,7 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from links.views import UserProfileDetailView
+from links.views import UserProfileDetailView, UserProfileEditView
+from django.contrib.auth.decorators import login_required as auth
 
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r"^users/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
         name="profile"),
-    # url(r'^users/(?P<slug>\w+)/$', UserProfileDetailView.as_view(), name="profile")
+    url(r"^edit_profile/$", auth(UserProfileEditView.as_view()),
+        name="edit_profile"),
 ]
