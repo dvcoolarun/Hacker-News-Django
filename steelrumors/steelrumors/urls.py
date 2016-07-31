@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from links.views import UserProfileDetailView, UserProfileEditView
+from links.views import UserProfileDetailView, UserProfileEditView, LinkCreateView
 from django.contrib.auth.decorators import login_required as auth
 
 
@@ -31,4 +31,5 @@ urlpatterns = [
         name="profile"),
     url(r"^edit_profile/$", auth(UserProfileEditView.as_view()),
         name="edit_profile"),
+    url(r"^link/create/$", auth(LinkCreateView.as_view()), name='link_create')
 ]

@@ -1,12 +1,12 @@
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.contrib.auth import get_user_model
 from .models import Link, Vote, UserProfile
 
 from django.shortcuts import render
 from django.views import generic
 
-from .forms import UserProfileForm
+from .forms import UserProfileForm, LinkForm
 from django.core.urlresolvers import reverse
 
 
@@ -38,3 +38,25 @@ class UserProfileEditView(UpdateView):
 
     def get_success_url(self):
         return reverse("profile", kwargs={'slug': self.request.user})
+
+
+class LinkCreateView(CreateView):
+    model = Link
+    form_class = LinkForm
+
+    def form_valid(self, form):
+        # Firstly Because of CreateView First
+        # of all you have to save form to get an object.
+
+        # Do not persisting object to database for further
+        # customization(commit=False)
+
+        # then change object to fit your requirements.
+        # finally persist object in database
+
+        f = form.save(commit=False)
+        f.rank_score = 0.0
+        f.submitter = self.request.user
+        f.save()
+
+        return super(CreateView, self).form_valid(form)

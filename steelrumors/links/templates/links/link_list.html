@@ -1,13 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% if is_paginated %}
+<ol start="{{ page_obj.start_index }}">
+{% else %}
 <ol>
+{% endif %}
+
 {% for link in object_list %}
-    <li> [{{ link.votes }}]
-    <a href="{{ link.url }}">
-      <b>{{ link.title }}</b>
-    </a>
-    </li>
+	<li> [{{ link.votes }}]
+			<a href="{{ link.url }}">
+					<b>{{ link.title }}</b>
+			</a>
+	</li>
 {% endfor %}
 </ol>
+
+{% if is_paginated %}
+<div class="pagination">
+		{% if page_obj.has_next %}
+		<a href="?page{{ page_obj.next_page_number }}">More &raquo;</a>
+		{% endif %}
+</div>
+{% endif %}
+
 {% endblock %}
