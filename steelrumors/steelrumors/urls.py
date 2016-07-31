@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from links.views import UserProfileDetailView, UserProfileEditView, LinkCreateView
+import links.views as links_views
 from django.contrib.auth.decorators import login_required as auth
 
 
@@ -27,9 +27,16 @@ urlpatterns = [
         {'template_name': 'login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r"^users/(?P<slug>\w+)/$", UserProfileDetailView.as_view(),
+    url(r"^users/(?P<slug>\w+)/$", links_views.UserProfileDetailView.as_view(),
         name="profile"),
-    url(r"^edit_profile/$", auth(UserProfileEditView.as_view()),
+    url(r"^edit_profile/$", auth(links_views.UserProfileEditView.as_view()),
         name="edit_profile"),
-    url(r"^link/create/$", auth(LinkCreateView.as_view()), name='link_create')
+    url(r"^link/create/$", auth(links_views.LinkCreateView.as_view()),
+        name='link_create'),
+    url(r'^link/(?P<pk>\d+)/$', links_views.LinkDetailView.as_view(),
+        name='link_detail'),
+    url(r'^link/update/(?P<pk>\d+)/$',
+        auth(links_views.LinkUpdateView.as_view()), name='link_update'),
+    url(r'^link/delete/(?P<pk>\d+)/$',
+        auth(links_views.LinkDeleteView.as_view()), name='link_delete')
 ]

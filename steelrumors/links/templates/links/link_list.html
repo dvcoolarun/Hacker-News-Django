@@ -10,7 +10,7 @@
 
 {% for link in object_list %}
 	<li> [{{ link.votes }}]
-			<a href="{{ link.url }}">
+			<a href="{% url 'link_detail' pk=link.pk%}">
 					<b>{{ link.title }}</b>
 			</a>
 	</li>
