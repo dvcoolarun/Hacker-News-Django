@@ -8,9 +8,25 @@ from django.views import generic
 
 from .forms import UserProfileForm, LinkForm
 from django.core.urlresolvers import reverse, reverse_lazy
+from django_comments.models import Comment
+
+# a mixin is a class that contains methods for use by other classes
+# without being inherited by other classes.
+
+# get_context_data(**kwargs)
+# Returns a dictionary respresenting a template context.
+# The keyword arguments provided will make up the returned context
 
 
-class LinkListView(generic.ListView):
+class RandomGossipMixin(object):
+
+    def get_context_data(self, **kwargs):
+        context = super(RandomGossipMixin, self).get_context_data(**kwargs)
+        context["randomquip"] = Comment.objects.order_by('?')[0]
+        return context
+
+
+class LinkListView(RandomGossipMixin, ListView):
     model = Link
     queryset = Link.with_votes.all()
     paginate_by = 3
