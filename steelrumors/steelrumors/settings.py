@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'links.apps.LinksConfig',
     'registration',
     'steelrumors',
+    'django.contrib.sites',
+    'django_comments',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -88,6 +90,8 @@ DATABASES = {
     }
 }
 
+# SITE_ID
+SITE_ID = 1
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
