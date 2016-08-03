@@ -40,4 +40,5 @@ urlpatterns = [
     url(r'^link/delete/(?P<pk>\d+)/$',
         auth(links_views.LinkDeleteView.as_view()), name='link_delete'),
     url(r'^comments/', include('django_comments.urls')),
+    url(r'^vote/$', auth(links_views.VoteFormView.as_view()), name="vote")
 ]
