@@ -13,7 +13,13 @@
     {% csrf_token %}
     <input type="hidden" id="id_link" name="link" class="hidden_id" value="{{ link.pk }}" />
     <input type="hidden" id="id_voter" name="voter" class="hidden_id" value="{{ user.pk }}" />
+    {% if not user.is_authenticated %}
+    <button disabled title="Please Login to Vote">+</button>
+    {% elif link.pk not in voted %}
     <button>+</button>
+    {% else %}
+    <button>-</button>
+    {% endif %}
     <a href="{% url 'link_detail' pk=link.pk %}">
       <b>{{ link.title }}</b>
       {% get_comment_count for link as comment_count %}
