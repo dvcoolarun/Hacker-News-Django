@@ -26,6 +26,7 @@ SECRET_KEY = 'fhr=r_a97o%^nxa7%3&f6d!3u6bgl01#=$$c8e#a8-6ubtm#_z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 LOGIN_URL = reverse_lazy('login')

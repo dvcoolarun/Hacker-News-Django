@@ -18,6 +18,8 @@ from django.views.generic.edit import FormView
 from .forms import VoteForm
 from .models import Vote
 from .models import Link
+import json
+from django.http import HttpResponse
 
 # a mixin is a class that contains methods for use by other classes
 # without being inherited by other classes.
@@ -101,32 +103,47 @@ class LinkDeleteView(generic_edit.DeleteView):
     links_forms.success_url = reverse_lazy("home")
 
 
-class VoteFormView(FormView):
+# Mixin to Implement a JSON response for our
+# AJAX requests.
+
+class JSONFormMixin(object):
+
+    def create_response(self, vdict=dict(), valid_form=True):
+        response = HttpResponse(json.dumps(
+            vdict), content_type='application/json')
+        response.status = 200 if valid_form else 500
+        return response
+
+
+class VoteFormBaseView(FormView):
     form_class = VoteForm
 
-    # This method is called when valid form data has been posted
-    # it should return an HttpResponse
-    def form_valid(self, form):
-        link = get_object_or_404(Link, pk=link)
-        print(link)
-        user = self.request.user
-        print(user)
-        prev_votes = Vote.objects.filter(voter=user, link=link)
-        print(prev_votes)
-        has_voted = (prev_votes.count() > 0)
-        print(has_voted)
+    def create_response(self, vdict=dict(), valid_form=True):
+        response = HttpResponse(json.dumps(vdict))
+        response.status = 200 if valid_form else 500
+        return response
 
+    def form_valid(self, form):
+        link = get_object_or_404(Link, pk=form.data["link"])
+        user = self.request.user
+        prev_votes = Vote.objects.filter(voter=user, link=link)
+        has_voted = (len(prev_votes) > 0)
+
+        ret = {"success": 1}
         if not has_voted:
             # add vote
-            Vote.objects.create(voter=user, link=link)
-            print("voted")
+            v = Vote.objects.create(voter=user, link=link)
+            ret["voteobj"] = v.id
         else:
             # delete vote
             prev_votes[0].delete()
-            print("unvoted")
-
-        return redirect("home")
+            ret["unvoted"] = 1
+        return self.create_response(ret, True)
 
     def form_invalid(self, form):
-        print("invalid")
-        return redirect("home")
+        ret = {"success": 0, "form_errors": form_errors}
+        return self.create_response(ret, False)
+
+
+class VoteFormView(JSONFormMixin, VoteFormBaseView):
+    pass
