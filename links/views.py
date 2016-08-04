@@ -21,13 +21,6 @@ from .models import Link
 import json
 from django.http import HttpResponse
 
-# a mixin is a class that contains methods for use by other classes
-# without being inherited by other classes.
-
-# get_context_data(**kwargs)
-# Returns a dictionary respresenting a template context.
-# The keyword arguments provided will make up the returned context
-
 
 class RandomGossipMixin(object):
 
@@ -117,7 +110,6 @@ class LinkDeleteView(generic_edit.DeleteView):
 # AJAX requests.
 
 class JSONFormMixin(object):
-
     def create_response(self, vdict=dict(), valid_form=True):
         response = HttpResponse(json.dumps(
             vdict), content_type='application/json')
